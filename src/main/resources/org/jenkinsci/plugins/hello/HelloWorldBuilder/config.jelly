@@ -16,6 +16,10 @@
          so that Jenkins can create the new HelloWorldBuilder with the user-configured value
     -->
     <f:textbox />
+
+	</f:entry>
+	<f:entry title="Sleep time" field="sleepTime">
+	    <f:textbox />
 	</f:entry>
   <!--
     If you have multiple properties that need to be configured, add more <f:entry />s

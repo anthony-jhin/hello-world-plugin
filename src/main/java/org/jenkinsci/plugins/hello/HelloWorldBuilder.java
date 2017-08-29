@@ -13,6 +13,8 @@ import hudson.model.TaskListener;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import hudson.util.FormValidation;
+import org.kohsuke.stapler.DataBoundSetter;
+
 import jenkins.tasks.SimpleBuildStep;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -38,6 +40,9 @@ import org.kohsuke.stapler.StaplerRequest;
  */
 public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
 
+    /** Sleep duration in milliseconds. */
+    private long sleepTime = 0;
+
     /** Name to be displayed by the 'Say hello world' build step. */
     private final String name;
 
@@ -60,7 +65,20 @@ public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
     public final String getName() {
         return name;
     }
+    /** Return sleep time in milliseconds.
+     * @return sleep time in milliseconds
+     */
+    public final long getSleepTime() {
+     return sleepTime;
+    }
 
+    /** Set sleep time in milliseconds.
+     * @param sleepTime duration of sleep in milliseconds
+     */
+    @DataBoundSetter
+    public final void setSleepTime(final long sleepTime) {
+     this.sleepTime = sleepTime;
+    }
     @Override
     public final void perform(final Run<?, ?> run,
                               final FilePath workspace,
@@ -77,6 +95,14 @@ public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
         } else {
             listener.getLogger().println("Hello, " + name + "!");
         }
+        /** log sleep times */
+        final long toSeconds = 1000;
+        listener.getLogger().println("Sleeping "
+        + (sleepTime / toSeconds) + " seconds");
+        Thread.sleep(sleepTime);
+        /** log awake times */
+        listener.getLogger().println("Awake after "
+        + (sleepTime / toSeconds) + " seconds");
     }
 
     /**
